@@ -9,49 +9,50 @@ b: null
  a.b.c
  */
 
+import mergeDeep from "../tools/mergeDeep";
+
 export default {
     methods: {
         copyObject(obj, paths) {
-            const newObj = {};
+            let newObj = {};
+            const structures = [];
 
+            // пробег по каждому пути
             paths.forEach(path => {
                 const splittedPaths = path.split('.');
 
-                let structure = {};
+                //каждый путь изначально является полной копией начального объекта
+
+                const template = JSON.stringify(obj);
+
+                let structure = JSON.parse(template);
+
+                //пробежка по каждой части вложенного пути
 
                 splittedPaths.forEach((part, index) => {
-                    let relatedLink = obj[part];
+                    let relatedLink = structure;
 
-                    for (let i = 0; i < index; i++) {
-                        console.log('here', index, );
-                        relatedLink = obj[splittedPaths[i]];
+                    // Реализация вложенности без рекурсии
+
+                    for (let i = 0; i <= index - 1; i++) {
+                        relatedLink = relatedLink[splittedPaths[i]];
                     }
 
-                    if (relatedLink) {
-                        structure[part] = JSON.parse(JSON.stringify(relatedLink));
-
-                        for(const [key, value] of Object.entries(structure)) {
-                            console.log('\n')
-                            console.log(key, value, part)
-                            console.log('\n')
-
-                            if (key !== part) {
-                                console.log('\n')
-                                console.log('delete?')
-                                console.log('\n')
-
-                                delete structure[key];
-                            }
+                    // удаление всех лишних ключей
+                    for(const [key, ] of Object.entries(relatedLink)) {
+                        if (key !== part) {
+                            delete relatedLink[key];
                         }
-                        console.log('\n')
-
-                        console.log(relatedLink, 'RELATED LINK')
-                        console.log('\n')
                     }
                 });
 
-                Object.assign(newObj, structure);
+                // сохранение получившейся структуры
+
+                structures.push(structure)
             })
+
+            // глубокое слияние всех структур в один объект
+            mergeDeep(newObj, ...structures);
 
             return newObj;
         }

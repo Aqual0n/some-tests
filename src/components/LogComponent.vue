@@ -19,13 +19,19 @@ export default {
                 a: 1,
                 b: 2,
                 c: 3,
+                d: {
+                    c: {
+                        d: 4
+                    },
+                    b: 3,
+                }
             },
             b: {
                 a: null
             }
         }
 
-        const testPaths1 = ['a.a', 'd.a'];
+        const testPaths1 = ['a.a', 'a.d.c.d', 'a.d.c.b'];
 
         let finalObject1 = this.copyObject(testObject1, testPaths1)
 

@@ -53,8 +53,8 @@ export default {
 
             const dataToReturn = process(data);
 
-            console.log(dataToReturn);
-            return process(data);
+            // console.log(dataToReturn);
+            return dataToReturn;
         }
     }
 }
