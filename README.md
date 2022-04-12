@@ -1,5 +1,10 @@
 # test
 
+### Runs tests
+```
+npm run test
+```
+
 ## Project setup
 ```
 npm install
